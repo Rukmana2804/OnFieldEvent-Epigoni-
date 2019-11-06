@@ -1,0 +1,757 @@
+/* PEMBUATAN PROSEDUR KODE OTOMATIS UNTUK BARANG YANG MASIH DI PROSES */
+
+STORED PROCEDURE
+
+begin
+if (JENIS_PRODUK='Papercore' or (JENIS_PRODUK='Paralel Tube') or (JENIS_PRODUK='Tube Kotak')) then begin
+     idas_1=:id_as;
+     idas_2=:id_as;
+
+     /* ID AS */
+     if (idas_1 < 101) then begin
+        select
+        case char_length(cast(left(replace(round(:idas_1,1),'.',''),4)as varchar5))
+            when 1 then cast('000'||cast(left(replace(round(:idas_1,1),'.',''),4) as varchar5) as varchar5)
+        else
+        cast(left(replace(round(:idas_1,1),'.',''),4) as varchar5)
+        end
+        from rdb$database into :idas_v;
+     end
+
+     if (idas_2 > 101) then begin
+        select case cast(left(:idas_2,2) as varchar5)
+           when 10 then 'A'
+           when 11 then 'B'
+           when 12 then 'C'
+           when 13 then 'D'
+           when 14 then 'E'
+           when 15 then 'F'
+           when 16 then 'G'
+           when 17 then 'H'
+           when 18 then 'I'
+           when 19 then 'J'
+           when 20 then 'K'
+           when 21 then 'L'
+           when 22 then 'M'
+           when 23 then 'N'
+           when 24 then 'O'
+           when 25 then 'P'
+           when 26 then 'Q'
+           when 27 then 'R'
+           when 28 then 'S'
+           when 29 then 'T'
+           when 30 then 'U'
+           when 31 then 'V'
+           when 32 then 'W'
+           when 33 then 'X'
+           when 34 then 'Y'
+           when 35 then 'Z'
+
+           else
+           :idas_2
+           end
+           from rdb$database into :idas_v;
+           end
+
+           if (idas_2 > 101) then begin
+              idas_v = idas_v || right(replace(ROUND(:idas_2, 1),'.',''),2);
+           end
+           /* END ID AS */
+
+     tebal_1=:tebal;
+     tebal_2=:tebal;
+     /* TEBAL */
+     if (tebal_1 <= 9 ) then begin
+        select case char_length(cast(left(replace(round(:tebal_1,1),'.',''),4) as varchar5))
+           when 1 then cast('000'||cast(left(replace(round(:tebal_1,1),'.',''),4) as varchar5) as varchar5)
+        else
+        cast(left(replace(round(:tebal_1,1),'.',''),4) as varchar5)
+        end
+        from rdb$database into :tebal_v;
+     end
+
+     if (tebal_2 > 9 ) then begin
+        select case cast(left(:tebal_2,2) as varchar5)
+           when 10 then 'A'
+           when 11 then 'B'
+           when 12 then 'C'
+           when 13 then 'D'
+           when 14 then 'E'
+           when 15 then 'F'
+           when 16 then 'G'
+           when 17 then 'H'
+           when 18 then 'I'
+           when 19 then 'J'
+           when 20 then 'K'
+           when 21 then 'L'
+           when 22 then 'M'
+           when 23 then 'N'
+           when 24 then 'O'
+           when 25 then 'P'
+           when 26 then 'Q'
+           when 27 then 'R'
+           when 28 then 'S'
+           when 29 then 'T'
+           when 30 then 'U'
+           when 31 then 'V'
+           when 32 then 'W'
+           when 33 then 'X'
+           when 34 then 'Y'
+           when 35 then 'Z'
+           else
+           :tebal_2
+        end
+        from rdb$database into :tebal_v;
+     end
+
+     if (tebal_2 > 9) then begin
+        tebal_v = tebal_v || right(replace(ROUND(:tebal_2, 1),'.',''),1);
+     end
+     /* END TEBAL */
+
+     /* JENIS PRODUK */
+     if (JENIS_PRODUK='Papercore') then begin
+        jeprod ='C';
+     end else if (JENIS_PRODUK='Paralel Tube') then begin
+        jeprod ='B';
+     end else if (JENIS_PRODUK='Tube Kotak') then begin
+        jeprod ='A';
+     end
+     /* END JENIS PRODUK */
+
+     /* GRADE PLY */
+     if (GRADE_PLY='GL') then begin
+        play =1;
+     end else if (GRADE_PLY='GN') then begin
+        play =2;
+     end else if (GRADE_PLY='GH') then begin
+        play =3;
+     end else if (GRADE_PLY='GE') then begin
+        play =4;
+     end
+     /* END GRADE PLY*/
+
+     /* PROSES KHUSUS */
+     if (PROSES_KHUSUS='.') then begin
+        prokhus =0;
+     end else if (PROSES_KHUSUS='S') then begin
+        prokhus =1;
+     end else if (PROSES_KHUSUS='SP') then begin
+        prokhus =2;
+     end else if (PROSES_KHUSUS='SC') then begin
+        prokhus =3;
+     end else if (PROSES_KHUSUS='SCP') then begin
+        prokhus =4;
+     end
+
+     /* KERTAS KHUSUS */
+     if (KERTAS_KHUSUS='.') then begin
+        kerkhus =0;
+     end else if (KERTAS_KHUSUS='OKR') then begin
+        kerkhus =1;
+     end else if (KERTAS_KHUSUS='OKR-IWH') then begin
+        kerkhus =2;
+     end else if (KERTAS_KHUSUS='OKR-IPR') then begin
+        kerkhus =3;
+     end else if (KERTAS_KHUSUS='OWH-IPR') then begin
+        kerkhus =4;
+     end
+     /* END KERTAS KHUSUS */
+
+     /* VARIAN KHUSUS */
+     if (VARIAN_KHUSUS='Normal') then begin
+        varkhus ='00';
+     end else if (VARIAN_KHUSUS='1532 SWAN (Teraoka)') then begin
+        varkhus ='T1';
+     end else if (VARIAN_KHUSUS='1590 FORESTWAY (Teraoka)') then begin
+        varkhus ='T2';
+     end else if (VARIAN_KHUSUS='Mizu (Tunas Mitra)') then begin
+        varkhus ='M1';
+     end else if (VARIAN_KHUSUS='TM (Tunas Mitra)') then begin
+        varkhus ='M2';
+     end
+     /* END VARIAN KHUSUS */
+
+     /* PANJANG */
+     panjang_1=:panjang;
+     select
+     case char_length(cast(:panjang_1 as varchar5))
+        when 1 then cast('000'||cast(:panjang_1 as varchar5) as varchar5)
+        when 2 then cast('00'||cast(:panjang_1 as varchar5) as varchar5)
+        when 3 then cast('0'||cast(:panjang_1 as varchar5) as varchar5)
+     else
+     :panjang_1
+     end
+     from rdb$database into :panjang_v;
+     /* END PANJANG */
+
+     /* STORE VALUES  PAPERCORE & PARALEL PAPERCORE */
+     kode_wip=jeprod||idas_v||tebal_v||play||prokhus||kerkhus||varkhus||panjang_v;
+     /* END STORE VALUES */
+     end
+
+     if (JENIS_PRODUK='Pantex Spacer' or (JENIS_PRODUK='Papan Textile') ) then begin
+        if (JENIS_PRODUK='Pantex Spacer') then begin
+           jeprod ='T';
+        end else if (JENIS_PRODUK='Papan Textile') then begin
+           jeprod ='T';
+        end
+
+        /* LEBAR */
+        lebar_1=:lebar;
+        select
+           case char_length(cast(:lebar_1 as varchar5))
+           --when 1 then cast('000'||cast(:lebar_1 as varchar5) as varchar5)
+           when 1 then cast('00'||cast(:lebar_1 as varchar5) as varchar5)
+           when 2 then cast('0'||cast(:lebar_1 as varchar5) as varchar5)
+        else
+        :lebar_1
+        end
+        from rdb$database into :lebar_v;
+
+     /* TEBAL */
+     tebal_3=:tebal;
+     if (tebal_3 < 99) then begin
+        select case char_length(cast(left(replace(round(:tebal_3,1),'.',''),2) as varchar5))
+           when 1 then cast('0'||cast(left(replace(round(:tebal_3,1),'.',''),2) as varchar5) as varchar5)
+        else
+        cast(left(replace(round(:tebal_3,1),'.',''),2) as varchar5)
+        end
+        from rdb$database into :tebal_v3;
+     end
+
+     /* VARIAN */
+     if (VARIAN_BENTUK='Oval') then begin
+        vartuk = 'L';
+     end else if (VARIAN_BENTUK='Kotak') then begin
+        vartuk = 'K';
+     end
+
+     /* CELL */
+     if (CELL=26) then begin
+        cell2 = 'A';
+     end else if (CELL=29) then begin
+        cell2 = 'B';
+     end else if (CELL=34) then begin
+        cell2 = 'C';
+     end else if (CELL=40) then begin
+        cell2 = 'D';
+     end else if (CELL=50) then begin
+        cell2 = 'E';
+     end
+
+     /* PANJANG */
+     panjang_2=:panjang;
+     select
+     case char_length(cast(:panjang_2 as varchar5))
+        when 1 then cast('000'||cast(:panjang_2 as varchar5) as varchar5)
+        when 2 then cast('00'||cast(:panjang_2 as varchar5) as varchar5)
+        when 3 then cast('0'||cast(:panjang_2 as varchar5) as varchar5)
+     else
+     :panjang_2
+     end
+     from rdb$database into :panjang_v2;
+
+     /* VARIAN ACC 1 dan VARIAN ACC 2 */
+     if (VARIAN_ACC1='DUPLEX LAKBAN') then begin
+        varacc1 = 'P';
+     end
+     else if (VARIAN_ACC1='DUPLEX STIKER') then begin
+        varacc1 = 'S';
+     end
+     else if (VARIAN_ACC1='TANPA DUPLEX LAKBAN') then begin
+        varacc1 = 'N';
+     end
+     else if (VARIAN_ACC1='TANPA DUPLEX STIKER') then begin
+        varacc1 = 'R';
+     end
+
+     if (VARIAN_ACC2='PANTEX STANDARD') then begin
+        varacc2 = 'ST';
+     end
+     else if (VARIAN_ACC2='PANTEX SPACER') then begin
+        varacc2 = 'SR';
+     end
+
+        kode_wip = jeprod||lebar_v||tebal_v3||vartuk||cell2||panjang_v2||varacc1||varacc2;
+     end
+
+     /* EDGE PROTECTOR */
+     if (JENIS_PRODUK='EP Flat' or (JENIS_PRODUK='EP Siku') ) then begin
+        if (JENIS_PRODUK='EP Flat') then begin
+            jeprod2 ='E';
+        end else if (JENIS_PRODUK='EP Siku') then begin
+            jeprod2 ='E';
+        end
+
+        /* TEBAL */
+         tebal_4=:tebal;
+         if (tebal_4 < 99) then begin
+            select case char_length(cast(:tebal_4 as varchar5))
+                when 1 then cast('0'||cast(:tebal_4 as varchar5) as varchar5)
+            else
+            :tebal_4
+            end
+            from rdb$database into :tebal_v4;
+         end
+
+         /* SISI 1 */
+         sisi_1=:sisi1;
+         select case char_length(cast(:sisi_1 as varchar5))
+            when 1 then cast('00'||cast(:sisi_1 as varchar5) as varchar5)
+            when 2 then cast('0'||cast(:sisi_1 as varchar5) as varchar5)
+         else
+         :sisi_1
+         end
+         from rdb$database into :sisi_v1;
+
+         /* SISI 2 */
+         sisi_2=:sisi2;
+         select case char_length(cast(:sisi_2 as varchar5))
+            when 1 then cast('00'||cast(:sisi_2 as varchar5) as varchar5)
+            when 2 then cast('0'||cast(:sisi_2 as varchar5) as varchar5)
+         else
+         :sisi_2
+         end
+         from rdb$database into :sisi_v2;
+
+         /* TYPE PRODUK */
+         if (TYPE_PRODUK='FLAT') then begin
+            tipro = 'FT';
+         end
+         else if (TYPE_PRODUK='SIKU') then begin
+            tipro = 'SK';
+         end
+
+         /* PANJANG */
+         panjang_3=:panjang;
+         select
+             case char_length(cast(:panjang_3 as varchar5))
+                 when 1 then cast('000'||cast(:panjang_3 as varchar5) as varchar5)
+                 when 2 then cast('00'||cast(:panjang_3 as varchar5) as varchar5)
+                 when 3 then cast('0'||cast(:panjang_3 as varchar5) as varchar5)
+         else
+         :panjang_3
+         end
+         from rdb$database into :panjang_v3;
+
+        kode_wip  = jeprod2||tebal_v4||sisi_v1||sisi_v2||tipro||panjang_v3;
+      end
+
+      /* LAYER */
+      if (JENIS_PRODUK='Layer') then begin
+         if (JENIS_PRODUK='Layer') then begin
+            jeprod3 ='L';
+         end
+
+         /* CELL */
+         if (CELL=26) then begin
+             cell3 = 'A';
+         end else if (CELL=29) then begin
+             cell3 = 'B';
+         end else if (CELL=34) then begin
+             cell3 = 'C';
+         end else if (CELL=40) then begin
+             cell3 = 'D';
+         end else if (CELL=50) then begin
+             cell3 = 'E';
+         end
+
+         /* PANJANG */
+         panjang_4=:panjang;
+         select
+           case char_length(cast(:panjang_4 as varchar5))
+            when 1 then cast('000'||cast(:panjang_4 as varchar5) as varchar5)
+            when 2 then cast('00'||cast(:panjang_4 as varchar5) as varchar5)
+            when 3 then cast('0'||cast(:panjang_4 as varchar5) as varchar5)
+         else
+         :panjang_4
+         end
+         from rdb$database into :panjang_v4;
+
+         /* LEBAR */
+         lebar_2=:lebar;
+         select
+           case char_length(cast(:lebar_2 as varchar5))
+           when 1 then cast('000'||cast(:lebar_2 as varchar5) as varchar5)
+           when 2 then cast('00'||cast(:lebar_2 as varchar5) as varchar5)
+           when 3 then cast('0'||cast(:lebar_2 as varchar5) as varchar5)
+         else
+         :lebar_2
+         end
+         from rdb$database into :lebar_v2;
+
+         /* TEBAL */
+         tebal_5=:tebal;
+         if (tebal_5 > 1) then begin
+            select case char_length(cast(:tebal_5 as varchar5))
+                when 1 then cast('00'||cast(:tebal_5 as varchar5) as varchar5)
+                when 2 then cast('0'||cast(:tebal_5 as varchar5) as varchar5)
+            else
+            :tebal_5
+            end
+            from rdb$database into :tebal_v5;
+         end
+
+         /* ROUNDING */
+         if (ROUNDING = 'UNKNOWN') then begin
+            round1 = 0;
+         end
+         else if (ROUNDING = 70) then begin
+            round1 = 'A';
+         end
+         else if (ROUNDING = 75) then begin
+            round1 = 'B';
+         end
+         else if (ROUNDING = 100) then begin
+            round1 = 'C';
+         end
+         else if (ROUNDING = 120) then begin
+            round1 = 'D';
+         end
+         else if (ROUNDING = 125) then begin
+            round1 = 'E';
+         end
+         else if (ROUNDING = 130) then begin
+            round1 = 'F';
+         end
+         else if (ROUNDING = 140) then begin
+            round1 = 'G';
+         end
+         else if (ROUNDING = 150) then begin
+            round1 = 'H';
+         end
+
+         /* JENIS PACKING */
+         if (JENIS_PACKING = 'URAL') then begin
+            jeking1 = 'U';
+         end
+         else if (JENIS_PACKING = 'PALLET') then begin
+            jeking1 = 'P';
+         end
+
+         kode_wip = jeprod3||cell3||panjang_v4||lebar_v2||tebal_v5||round1||jeking1;
+         end
+
+         /* BOX */
+         if (JENIS_PRODUK='Box') then begin
+             if (JENIS_PRODUK='Box') then begin
+                 jeprod4 ='B';
+             end
+
+             /* PANJANG */
+             panjang_5=:panjang;
+             select
+                case char_length(cast(:panjang_5 as varchar5))
+                    when 1 then cast('000'||cast(:panjang_5 as varchar5) as varchar5)
+                    when 2 then cast('00'||cast(:panjang_5 as varchar5) as varchar5)
+                    when 3 then cast('0'||cast(:panjang_5 as varchar5) as varchar5)
+                else
+                :panjang_5
+             end
+             from rdb$database into :panjang_v5;
+
+             /* LEBAR */
+             lebar_3=:lebar;
+             select
+               case char_length(cast(:lebar_3 as varchar5))
+                   when 1 then cast('000'||cast(:lebar_3 as varchar5) as varchar5)
+                   when 2 then cast('00'||cast(:lebar_3 as varchar5) as varchar5)
+                   when 3 then cast('0'||cast(:lebar_3 as varchar5) as varchar5)
+               else
+             :lebar_3
+             end
+             from rdb$database into :lebar_v3;
+
+            /* TINGGI */
+             tinggi_1=:tinggi;
+             select
+                case char_length(cast(:tinggi_1 as varchar5))
+                    when 1 then cast('000'||cast(:tinggi_1 as varchar5) as varchar5)
+                    when 2 then cast('00'||cast(:tinggi_1 as varchar5) as varchar5)
+                    when 3 then cast('0'||cast(:tinggi_1 as varchar5) as varchar5)
+                else
+                :tinggi_1
+             end
+             from rdb$database into :tinggi_v1;
+
+             /* VARIAN PRODUK */
+             if (VARIAN_PRODUK='STANDARD') then begin
+                varprod2 = 'ST';
+             end
+             else if (VARIAN_PRODUK='CUSTOM') then begin
+                varprod2 = 'CS';
+             end
+
+             kode_wip = jeprod4||panjang_v5||lebar_v3||tinggi_v1||varprod2;
+         end
+
+         /* HOLEPAD */
+         if (JENIS_PRODUK='Holepad' ) then begin
+            if (JENIS_PRODUK='Holepad') then begin
+               jeprod5 ='H';
+            end
+
+         /* CELL */
+         if (CELL=26) then begin
+             cell4 = 'A';
+         end else if (CELL=29) then begin
+             cell4 = 'B';
+         end else if (CELL=34) then begin
+             cell4 = 'C';
+         end else if (CELL=40) then begin
+             cell4 = 'D';
+         end else if (CELL=50) then begin
+             cell4 = 'E';
+         end
+
+        /* PANJANG */
+        panjang_6=:panjang;
+        panjang_7=:panjang;
+        if (panjang_6 < 999) then begin
+        select
+        case char_length(cast(left(replace(round(:panjang_6,1),'.',''),4)as varchar5))
+            when 1 then cast('000'||cast(left(replace(round(:panjang_6,1),'.',''),4) as varchar5) as varchar5)
+        else
+        cast(left(replace(round(:panjang_6,1),'.',''),4) as varchar5)
+        end
+        from rdb$database into :panjang_v6;
+        end
+
+        if (panjang_7 > 1000) then begin
+           select case cast(left(:panjang_7, 2) as varchar5)
+           when 10 then 'A'
+           when 11 then 'B'
+           when 12 then 'C'
+           when 13 then 'D'
+           when 14 then 'E'
+           when 15 then 'F'
+           when 16 then 'G'
+           when 17 then 'H'
+           when 18 then 'I'
+           when 19 then 'J'
+           when 20 then 'K'
+           when 21 then 'L'
+           when 22 then 'M'
+           when 23 then 'N'
+           when 24 then 'O'
+           when 25 then 'P'
+           when 26 then 'Q'
+           when 27 then 'R'
+           when 28 then 'S'
+           when 29 then 'T'
+           when 30 then 'U'
+           when 31 then 'V'
+           when 32 then 'W'
+           when 33 then 'X'
+           when 34 then 'Y'
+           when 35 then 'Z'
+           else
+           :panjang_7
+           end
+           from rdb$database into :panjang_v6;
+        end
+
+        if (panjang_7 > 1000) then begin
+           panjang_v6 = panjang_v6 || right(replace(ROUND(:panjang_7, 1),'.',''),2);
+        end
+
+        /* LEBAR */
+        lebar_4=:lebar;
+        lebar_5=:lebar;
+
+        if (lebar_4 < 999) then begin
+        select
+        case char_length(cast(left(replace(round(:lebar_4,1),'.',''),4)as varchar5))
+            when 1 then cast('000'||cast(left(replace(round(:lebar_4,1),'.',''),4) as varchar5) as varchar5)
+        else
+        cast(left(replace(round(:lebar_4,1),'.',''),4) as varchar5)
+        end
+        from rdb$database into :lebar_v4;
+        end
+
+        if (lebar_5 > 1000) then begin
+           select case cast(left(:lebar_5, 2) as varchar5)
+           when 10 then 'A'
+           when 11 then 'B'
+           when 12 then 'C'
+           when 13 then 'D'
+           when 14 then 'E'
+           when 15 then 'F'
+           when 16 then 'G'
+           when 17 then 'H'
+           when 18 then 'I'
+           when 19 then 'J'
+           when 20 then 'K'
+           when 21 then 'L'
+           when 22 then 'M'
+           when 23 then 'N'
+           when 24 then 'O'
+           when 25 then 'P'
+           when 26 then 'Q'
+           when 27 then 'R'
+           when 28 then 'S'
+           when 29 then 'T'
+           when 30 then 'U'
+           when 31 then 'V'
+           when 32 then 'W'
+           when 33 then 'X'
+           when 34 then 'Y'
+           when 35 then 'Z'
+           else
+           :lebar_5
+           end
+           from rdb$database into :lebar_v4;
+        end
+
+        if (lebar_5 > 1000) then begin
+           lebar_v4 = lebar_v4 || right(replace(ROUND(:lebar_5, 1),'.',''),2);
+        end
+
+        /* TEBAL */
+        tebal_6=:tebal;
+        select case char_length(cast(:tebal_6 as varchar5))
+        when 1 then cast('0'||cast(:tebal_6 as varchar5) as varchar5)
+        else
+        :tebal_6
+        end
+        from rdb$database into :tebal_v6;
+
+
+         /* ROUNDING */
+         if (ROUNDING = 'UNKNOWN') then begin
+            round2 = 0;
+         end
+         else if (ROUNDING = 70) then begin
+            round2 = 'A';
+         end
+         else if (ROUNDING = 75) then begin
+            round2 = 'B';
+         end
+         else if (ROUNDING = 100) then begin
+            round2 = 'C';
+         end
+         else if (ROUNDING = 120) then begin
+            round2 = 'D';
+         end
+         else if (ROUNDING = 125) then begin
+            round2 = 'E';
+         end
+         else if (ROUNDING = 130) then begin
+            round2 = 'F';
+         end
+         else if (ROUNDING = 140) then begin
+            round2 = 'G';
+         end
+         else if (ROUNDING = 150) then begin
+            round2 = 'H';
+         end
+
+        /* JUMLAH HOLE */
+        jml1=:jml_hole;
+        jml2=:jml_hole;
+        if (jml1 < 9) then begin
+           select case char_length(cast(left(:jml1, 2)as varchar5))
+               when 1 then cast('0'||cast(left(:jml1, 2)as varchar5) as varchar5)
+           else
+           cast(left(:jml1, 2)as varchar5)
+           end
+           from rdb$database into :jml1_v;
+        end
+
+        if (jml2 > 10) then begin
+           select case cast(left(:jml2, 2) as varchar5)
+           when 10 then 'A'
+           when 11 then 'B'
+           when 12 then 'C'
+           when 13 then 'D'
+           when 14 then 'E'
+           when 15 then 'F'
+           when 16 then 'G'
+           when 17 then 'H'
+           when 18 then 'I'
+           when 19 then 'J'
+           when 20 then 'K'
+           when 21 then 'L'
+           when 22 then 'M'
+           when 23 then 'N'
+           when 24 then 'O'
+           when 25 then 'P'
+           when 26 then 'Q'
+           when 27 then 'R'
+           when 28 then 'S'
+           when 29 then 'T'
+           when 30 then 'U'
+           when 31 then 'V'
+           when 32 then 'W'
+           when 33 then 'X'
+           when 34 then 'Y'
+           when 35 then 'Z'
+           else
+           :jml2
+           end
+           from rdb$database into :jml1_v;
+        end
+
+        if (jml2 > 10) then begin
+           jml1_v = jml1_v || right(:jml2, 2);
+        end
+
+        /* DIAMETER HOLE */
+        diam=:diameter_hole;
+        select case char_length(cast(:diam as varchar5))
+            when 1 then cast('0'||cast(:diam as varchar5) as varchar5)
+        else
+        :diam
+        end
+        from rdb$database into :diam_v;
+
+
+        /* GARIS HOLE */
+        if (GARIS_HOLE='LINIER HOLE') then begin
+           garhol ='L';
+        end
+        else if (GARIS_HOLE='ZIGZAG HOLE') then begin
+           garhol ='Z';
+        end
+
+        kode_wip = jeprod5||cell4||panjang_v6||lebar_v4||tebal_v6||round2||jml1_v||diam_v||garhol;
+        end
+
+       if (jenis_produk='Core') then begin
+
+           select
+            case char_length(:LEBAR)
+            when 1 then cast('000'||:TEBAL as varchar10)
+            when 2 then  cast('00'||:TEBAL as varchar10)
+            when 3 then  cast('0'||:TEBAL as varchar10)
+            else
+            :TEBAL
+            end
+            from rdb$database into :TEBAL_v;
+
+            select
+            case char_length(:LEMBAR)
+            when 1 then cast('000'||:LEMBAR as varchar10)
+            when 2 then  cast('00'||:LEMBAR as varchar10)
+            when 3 then  cast('0'||:LEMBAR as varchar10)
+            else
+            :LEMBAR
+            end
+            from rdb$database into :LEMBAR_V;
+
+            select
+            case char_length(:PANJANG_1)
+            when 1 then cast('000'||:PANJANG_1 as varchar10)
+            when 2 then  cast('00'||:PANJANG_1 as varchar10)
+            when 3 then  cast('0'||:PANJANG_1 as varchar10)
+            else
+            :PANJANG_1
+            end
+            from rdb$database into :PANJANG_V;
+
+
+            kode_wip = 'O'||CELL||lembar_v||lebar_v||panjang_v;
+            end
+   suspend;
+end
